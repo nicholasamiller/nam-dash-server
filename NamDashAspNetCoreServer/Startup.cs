@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
+using NamDashAspNetCoreServer.Controllers;
 using NamDashAspNetCoreServer.Data;
 using NamDashAspNetCoreServer.Exceptions;
 using NamDashAspNetCoreServer.Interfaces;
@@ -41,6 +42,16 @@ namespace NamDashAspNetCoreServer
             services.AddSingleton<AzureStorageQuotesRepoSettings,AzureStorageQuotesRepoSettings>(provider =>
                 new AzureStorageQuotesRepoSettings(quotesUrl));
             services.AddSingleton<IQuotesRepository, AzureDataStorageQuotesRepository>();
+           
+
+            var bookmarsUrl = Configuration.GetValue<string>("BookmarksStorageUrl");
+            if (bookmarsUrl == null)
+            {
+                throw new ConfigurationException("Need url for bokmarks.");
+            }
+
+            services.AddSingleton<BookmarksControllerSettings>(provider =>
+                new BookmarksControllerSettings(bookmarsUrl));
 
         }
 
@@ -53,6 +64,7 @@ namespace NamDashAspNetCoreServer
             }
 
             app.UseStaticFiles();
+            app.UseDefaultFiles();
             app.UseMvc();
         }
     }

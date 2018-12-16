@@ -25,5 +25,12 @@ namespace NamDashAspNetCoreServer.Controllers
             var quote = await _quotesRepository.GetRandomQuote();
             return quote;
         }
+
+        [HttpGet("getQuoteOfDay")]
+        public async Task<string> GetQuoteOfDay()
+        {
+            var q = await _quotesRepository.GetQuoteOfTheDay();
+            return q;
+        }
     }
 }

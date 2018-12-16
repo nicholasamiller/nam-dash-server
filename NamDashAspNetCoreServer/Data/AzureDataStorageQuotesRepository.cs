@@ -25,5 +25,14 @@ namespace NamDashAspNetCoreServer.Data
             var randomQuoteIndex = random.Next(0, _quotes.Count);
             return Task.FromResult(_quotes[randomQuoteIndex]);
         }
+
+        public Task<string> GetQuoteOfTheDay()
+        {
+            var now = DateTime.Now;
+            var seed = now.Year + now.DayOfYear;
+            var random = new Random(seed);
+            var randomIndex = random.Next(0, _quotes.Count);
+            return Task.FromResult(_quotes[randomIndex]);
+        }
     }
 }
